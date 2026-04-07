@@ -56,4 +56,17 @@ export class TodoPage {
         await todoToDelete.hover();
         await deleteButton.click();
     }
+
+// TODO: refactor these to have one filter(state)
+    async filterActive() {
+        await this.page.locator(".filters >> text=Active").click();
+    }
+
+    async filterCompleted() {
+        await this.page.locator(".filters >> text=Completed").click();
+    }
+
+    async filterAll() {
+        await this.page.locator(".filters >> text=All").click();
+    }
 }
