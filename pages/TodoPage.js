@@ -15,17 +15,34 @@ export class TodoPage {
         await this.newTodoInput.press('Enter');
     }
 
+    async addTodos(...todos) {
+        for (const todo of todos) {
+            await this.addTodo(todo);
+        }
+    }
+
     async todosShouldBe(todos) {
         await expect(this.todos).toHaveText(todos);
     }
 
     async toggle(todo) {
-        const todoToToggle = this.todos.filter({ hasText: todo });
+        const todoToToggle = await this.getTodoByText(todo);
         const toggle = todoToToggle.locator('.toggle');
         await toggle.click();
     }
 
+     getTodoByText(todo) {
+        return this.todos.filter({ hasText: todo });
+    }
+
     async clearCompleted() {
         await this.clearButton.click();
+    }
+
+    async delete(todo) {
+        const todoToDelete = await this.getTodoByText(todo);
+        const deleteButton = todoToDelete.locator('.destroy');
+        await todoToDelete.hover();
+        await deleteButton.click();
     }
 }
