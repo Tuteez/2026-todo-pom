@@ -4,6 +4,8 @@ export class TodoPage {
         this.page = page;
         this.newTodoInput = this.page.locator('.new-todo');
         this.todos = this.page.locator('.todo-list li');
+        this.activeTodos = this.page.locator('.todo-list li:not(.completed)');
+        this.completedTodos = this.page.locator('.todo-list li.completed');
         this.clearCompletedButton = this.page.locator('.clear-completed');
     }
 
@@ -27,9 +29,11 @@ export class TodoPage {
     }
 
     async activeTodosShouldBe(todos) {
-        // TODO FIX
-        const activeTodos = this.todos.filter({ hasNot: '.completed' });
-        await expect(activeTodos).toHaveText(todos);
+        await expect(this.activeTodos).toHaveText(todos);
+    }
+
+    async completeTodosShouldBe(todos) {
+        await expect(this.completedTodos).toHaveText(todos);
     }
 
     async toggle(todo) {

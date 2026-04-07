@@ -17,6 +17,7 @@ test('toggle', async ({ page }) => {
   await todoPage.addTodos("A", "B", "C");
   await todoPage.toggle('B')
   await todoPage.activeTodosShouldBe(['A', 'C']);
+  await todoPage.completeTodosShouldBe(['B']);
 });
 
 test('clear completed', async ({ page }) => {
