@@ -4,8 +4,9 @@ export class TodoPage {
         this.page = page;
         this.newTodoInput = this.page.locator('.new-todo');
         this.todos = this.page.locator('.todo-list li');
-        this.clearButton = this.page.locator('.clear-completed');
+        this.clearCompletedButton = this.page.locator('.clear-completed');
     }
+
     async open() {
         await this.page.goto('https://todomvc.com/examples/emberjs/todomvc/dist/');
     }
@@ -25,6 +26,12 @@ export class TodoPage {
         await expect(this.todos).toHaveText(todos);
     }
 
+    async activeTodosShouldBe(todos) {
+        // TODO FIX
+        const activeTodos = this.todos.filter({ hasNot: '.completed' });
+        await expect(activeTodos).toHaveText(todos);
+    }
+
     async toggle(todo) {
         const todoToToggle = await this.getTodoByText(todo);
         const toggle = todoToToggle.locator('.toggle');
@@ -36,7 +43,7 @@ export class TodoPage {
     }
 
     async clearCompleted() {
-        await this.clearButton.click();
+        await this.clearCompletedButton.click();
     }
 
     async delete(todo) {

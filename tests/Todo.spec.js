@@ -2,17 +2,38 @@
 import { test } from '@playwright/test';
 import { TodoPage } from '../pages/TodoPage';
 
-test('smoke', async ({ page }) => {
+test('add multiple todos', async ({ page }) => {
   const todoPage = new TodoPage(page);
   await todoPage.open();
 
   await todoPage.addTodos("A", "B", "C");
   await todoPage.todosShouldBe(['A', 'B', 'C']);
+});
+
+test('toggle', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+
+  await todoPage.addTodos("A", "B", "C");
+  await todoPage.toggle('B')
+  await todoPage.activeTodosShouldBe(['A', 'C']);
+});
+
+test('clear completed', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+
+  await todoPage.addTodos("A", "B", "C");
   await todoPage.toggle('B');
   await todoPage.clearCompleted();
   await todoPage.todosShouldBe(['A', 'C']);
-  await todoPage.delete('C');
-  await todoPage.todosShouldBe(['A']);
 });
 
+test('delete a todo', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
 
+  await todoPage.addTodos("A", "B", "C");
+  await todoPage.delete('B');
+  await todoPage.todosShouldBe(['A', 'C']);
+});
