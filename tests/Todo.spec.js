@@ -24,7 +24,20 @@ test('toggle', async ({ page }) => {
   await todoPage.activeTodosShouldBe(['A', 'B', 'C']);
   await todoPage.completeTodosShouldBe([]);
 });
-// toggle all
+
+test('toggle all', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
+
+  await todoPage.toggleAll();
+  await todoPage.activeTodosShouldBe([]);
+  await todoPage.completeTodosShouldBe(['A', 'B', 'C']);
+
+  await todoPage.toggleAll();
+  await todoPage.activeTodosShouldBe(['A', 'B', 'C']);
+  await todoPage.completeTodosShouldBe([]);
+});
 
 test('clear completed', async ({ page }) => {
   const todoPage = new TodoPage(page);
@@ -45,7 +58,17 @@ test('delete a todo', async ({ page }) => {
   await todoPage.todosShouldBe(['A', 'C']);
 });
 
-// Delete by editing to empty and pressing enter
+
+test('delete by editing to empty', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
+
+  await todoPage.edit('B', '');
+
+  await todoPage.todosShouldBe(['A', 'C']);
+});
+
 
 test('filters', async ({ page }) => {
   const todoPage = new TodoPage(page);
@@ -63,13 +86,59 @@ test('filters', async ({ page }) => {
   await todoPage.todosShouldBe(['A', 'B', 'C']);
 });
 
-// edit by enter
-// edit by tab
-// edit by clicking outside
-// edit + refresh should NOT keep changes
-// edit + escape should cancel edit
+test('edit by enter', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
 
-// items left should update correctly ( > 0)
-// item left (=0)
+  await todoPage.edit('B', 'B edited');
+  await todoPage.todosShouldBe(['A', 'B edited', 'C']);
+});
 
-// on fresh open main and footer should be hidden
+test('edit by focus change', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
+
+  await todoPage.editByTab('B', 'B edited');
+  await todoPage.todosShouldBe(['A', 'B edited', 'C']);
+});
+
+test('Start edit and refresh should NOT keep changes', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
+
+  await todoPage.startEditing('B', "B edited");
+  await page.reload();
+  await todoPage.todosShouldBe(['A', 'B', 'C']);
+}
+);
+
+test('edit by escape should cancel edit', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A", "B", "C");
+
+  await todoPage.editByEscape('B', 'B edited');
+  await todoPage.todosShouldBe(['A', 'B', 'C']);
+});
+
+test('items left should update correctly', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+  await todoPage.addTodos("A");
+
+  await todoPage.itemsLeftShouldBe('1 item left');
+
+  await todoPage.toggle('A');
+  await todoPage.itemsLeftShouldBe('0 items left');
+});
+
+test('main and footer should be hidden on fresh open', async ({ page }) => {
+  const todoPage = new TodoPage(page);
+  await todoPage.open();
+
+  await todoPage.todoListShouldBeHidden();
+  await todoPage.footerShouldBeHidden();
+});
