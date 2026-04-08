@@ -1,6 +1,7 @@
 // @ts-check
 import { test } from '@playwright/test';
 import { TodoPage } from '../pages/TodoPage';
+import { FileterState } from '../pages/helpers/FilterState';
 
 test('add multiple todos', async ({ page }) => {
   const todoPage = new TodoPage(page);
@@ -18,7 +19,12 @@ test('toggle', async ({ page }) => {
   await todoPage.toggle('B')
   await todoPage.activeTodosShouldBe(['A', 'C']);
   await todoPage.completeTodosShouldBe(['B']);
+
+  await todoPage.toggle('B')
+  await todoPage.activeTodosShouldBe(['A', 'B', 'C']);
+  await todoPage.completeTodosShouldBe([]);
 });
+// toggle all
 
 test('clear completed', async ({ page }) => {
   const todoPage = new TodoPage(page);
@@ -39,25 +45,31 @@ test('delete a todo', async ({ page }) => {
   await todoPage.todosShouldBe(['A', 'C']);
 });
 
+// Delete by editing to empty and pressing enter
+
 test('filters', async ({ page }) => {
   const todoPage = new TodoPage(page);
   await todoPage.open();
   await todoPage.addTodos("A", "B", "C");
   await todoPage.toggle('B');
 
-  await todoPage.filterActive();
-      // await todoPage.filter("Active");
+  await todoPage.filter(FileterState.ACTIVE);
   await todoPage.activeTodosShouldBe(['A', 'C']);
 
-  await todoPage.filterCompleted();
-      // await todoPage.filter("Completed");
+  await todoPage.filter(FileterState.COMPLETED);
   await todoPage.completeTodosShouldBe(['B']);
 
-  await todoPage.filterAll();
-    // await todoPage.filter("All");
+  await todoPage.filter(FileterState.ALL);
   await todoPage.todosShouldBe(['A', 'B', 'C']);
 });
 
+// edit by enter
+// edit by tab
+// edit by clicking outside
+// edit + refresh should NOT keep changes
+// edit + escape should cancel edit
 
-// clear completed test
-// delete test
+// items left should update correctly ( > 0)
+// item left (=0)
+
+// on fresh open main and footer should be hidden

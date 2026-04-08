@@ -42,7 +42,7 @@ export class TodoPage {
         await toggle.click();
     }
 
-     getTodoByText(todo) {
+    getTodoByText(todo) {
         return this.todos.filter({ hasText: todo });
     }
 
@@ -57,16 +57,8 @@ export class TodoPage {
         await deleteButton.click();
     }
 
-// TODO: refactor these to have one filter(state)
-    async filterActive() {
-        await this.page.locator(".filters >> text=Active").click();
+    async filter(state) {
+        await this.page.locator(`.filters >> text=${state}`).click();
     }
 
-    async filterCompleted() {
-        await this.page.locator(".filters >> text=Completed").click();
-    }
-
-    async filterAll() {
-        await this.page.locator(".filters >> text=All").click();
-    }
 }
