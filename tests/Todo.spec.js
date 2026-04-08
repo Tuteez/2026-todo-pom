@@ -1,7 +1,7 @@
 // @ts-check
 import { test } from '@playwright/test';
 import { TodoPage } from '../pages/TodoPage';
-import { FileterState } from '../pages/helpers/FilterState';
+import { FilterState } from '../pages/helpers/FilterState';
 
 test('add multiple todos', async ({ page }) => {
   const todoPage = new TodoPage(page);
@@ -53,13 +53,13 @@ test('filters', async ({ page }) => {
   await todoPage.addTodos("A", "B", "C");
   await todoPage.toggle('B');
 
-  await todoPage.filter(FileterState.ACTIVE);
+  await todoPage.filter(FilterState.ACTIVE);
   await todoPage.activeTodosShouldBe(['A', 'C']);
 
-  await todoPage.filter(FileterState.COMPLETED);
+  await todoPage.filter(FilterState.COMPLETED);
   await todoPage.completeTodosShouldBe(['B']);
 
-  await todoPage.filter(FileterState.ALL);
+  await todoPage.filter(FilterState.ALL);
   await todoPage.todosShouldBe(['A', 'B', 'C']);
 });
 
