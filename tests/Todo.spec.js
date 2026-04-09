@@ -91,7 +91,7 @@ test('edit by enter', async ({ page }) => {
   await todoPage.open();
   await todoPage.addTodos("A", "B", "C");
 
-  await todoPage.edit('B', 'B edited');
+  // await todoPage.edit('B', 'B edited');
   await todoPage.todosShouldBe(['A', 'B edited', 'C']);
 });
 
