@@ -1,4 +1,6 @@
 import { expect } from '@playwright/test';
+import { openPage } from '../helpers/navigation';
+
 export class TodoPage {
     constructor(page) {
         this.page = page;
@@ -13,7 +15,7 @@ export class TodoPage {
     }
 
     async open() {
-        await this.page.goto('https://todomvc.com/examples/emberjs/todomvc/dist/');
+        await openPage(this.page);
     }
 
     async addTodo(todo) {
