@@ -1,12 +1,16 @@
-// @ts-check
 import { test } from '@playwright/test';
 import { TodoPage } from '../pages/TodoPage';
 import { FilterState } from '../pages/helpers/FilterState';
 
 test.describe('Todo Application Tests', () => {
+  let todoPage;
+  
+  test.beforeEach(async ({ page }) => {
+    todoPage = new TodoPage(page);
+  });
+
   test.describe('Adding', () => {
-    test('add multiple todos', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('add multiple todos', async () => {
       await todoPage.open();
 
       await todoPage.addTodos("A", "B", "C");
@@ -16,11 +20,9 @@ test.describe('Todo Application Tests', () => {
   });
 
   test.describe('Toggling', () => {
-    test('toggle', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('toggle', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
-
       await todoPage.toggle('B');
       await todoPage.activeTodosShouldBe(['A', 'C']);
       await todoPage.completeTodosShouldBe(['B']);
@@ -30,8 +32,7 @@ test.describe('Todo Application Tests', () => {
       await todoPage.completeTodosShouldBe([]);
     });
 
-    test('toggle all', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('toggle all', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -46,8 +47,7 @@ test.describe('Todo Application Tests', () => {
   });
 
   test.describe('Clearing and Deleting', () => {
-    test('clear completed', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('clear completed', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
       await todoPage.toggle('B');
@@ -57,8 +57,7 @@ test.describe('Todo Application Tests', () => {
       await todoPage.todosShouldBe(['A', 'C']);
     });
 
-    test('delete a todo', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('delete a todo', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -67,8 +66,7 @@ test.describe('Todo Application Tests', () => {
       await todoPage.todosShouldBe(['A', 'C']);
     });
 
-    test('delete by editing to empty', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('delete by editing to empty', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -79,8 +77,7 @@ test.describe('Todo Application Tests', () => {
   });
 
   test.describe('Filtering', () => {
-    test('filters', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('filters', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
       await todoPage.toggle('B');
@@ -97,8 +94,7 @@ test.describe('Todo Application Tests', () => {
   });
 
   test.describe('Editing', () => {
-    test('edit by enter', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('edit by enter', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -107,8 +103,7 @@ test.describe('Todo Application Tests', () => {
       await todoPage.todosShouldBe(['A', 'B edited', 'C']);
     });
 
-    test('edit by focus change', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('edit by focus change', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -117,19 +112,17 @@ test.describe('Todo Application Tests', () => {
       await todoPage.todosShouldBe(['A', 'B edited', 'C']);
     });
 
-    test('edit and refresh should NOT keep changes', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('edit and refresh should NOT keep changes', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
       await todoPage.startEditing('B', "B edited");
-      await page.reload();
+      await todoPage.page.reload();
 
       await todoPage.todosShouldBe(['A', 'B', 'C']);
     });
 
-    test('edit by escape should cancel edit', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('edit by escape should cancel edit', async () => {
       await todoPage.open();
       await todoPage.addTodos("A", "B", "C");
 
@@ -140,21 +133,17 @@ test.describe('Todo Application Tests', () => {
   });
 
   test.describe('UI Behavior', () => {
-    test('items left should update correctly', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('items left should update correctly', async () => {
       await todoPage.open();
       await todoPage.addTodos("A");
-// TODO:Dynamic Assertions
       await todoPage.itemsLeftShouldBe('1 item left');
 
       await todoPage.toggle('A');
       await todoPage.itemsLeftShouldBe('0 items left');
     });
 
-    test('main and footer should be hidden on fresh open', async ({ page }) => {
-      const todoPage = new TodoPage(page);
+    test('main and footer should be hidden on fresh open', async () => {
       await todoPage.open();
-
       await todoPage.todoListShouldBeHidden();
       await todoPage.footerShouldBeHidden();
     });
