@@ -69,7 +69,7 @@ export class TodoPage {
     }
 
     async editByEscape(oldText, newText) {
-        const editInput = await this.startEditing(newText, oldText);
+        const editInput = await this.startEditing(oldText, newText);
         await editInput.press('Escape');
     }
 
@@ -95,7 +95,7 @@ export class TodoPage {
     }
 
     async itemsLeftShouldBe(text) {
-        await expect(this.itemsLeft).toHaveText("text");
+        await expect(this.itemsLeft).toHaveText(text);
     }
 
     async todoListShouldBeHidden() {
