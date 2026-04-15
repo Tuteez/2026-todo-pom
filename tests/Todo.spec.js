@@ -60,8 +60,6 @@ test.describe('Todo Application Tests', () => {
     });
 
     test('delete a todo', async ({ page }) => {
-      await openAndSeed(page, ['A', 'B', 'C']);
-
       await todoPage.delete('B');
 
       await todoPage.todosShouldBe(['A', 'C']);
@@ -80,7 +78,7 @@ test.describe('Todo Application Tests', () => {
     test('filters', async ({ page }) => {
      await openAndSeed(page, [
         { title: 'A' },
-        { title: 'B', completed: true },
+        { title: 'B', completed: false },
         { title: 'C' }
       ]);
 
@@ -132,6 +130,15 @@ test.describe('Todo Application Tests', () => {
 
   test.describe('UI Behavior', () => {
     test('items left should update correctly', async ({ page }) => {
+      await openAndSeed(page, ['A']);
+
+      await todoPage.itemsLeftShouldBe('1 item left');
+
+      await todoPage.toggle('A');
+      await todoPage.itemsLeftShouldBe('0 items left');
+    });
+    
+     test('items left should update correctly', async ({ page }) => {
       await openAndSeed(page, ['A']);
 
       await todoPage.itemsLeftShouldBe('1 item left');

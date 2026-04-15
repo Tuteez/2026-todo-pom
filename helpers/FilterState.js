@@ -1,5 +1,5 @@
 export const FilterState = Object.freeze({
-    ALL: 'All',
+    ALL: 'ALL',
     ACTIVE: 'Active',
     COMPLETED: 'Completed'
 });
