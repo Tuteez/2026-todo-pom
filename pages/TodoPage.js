@@ -36,7 +36,7 @@ export class TodoPage {
     }
 
     async toggleAll() {
-        await this.toggleAllCheckbox.click;
+        await this.toggleAllCheckbox.click();
     }
 
     getTodoByText(todo) {
@@ -48,8 +48,8 @@ export class TodoPage {
     }
 
     async delete(todo) {
-        const deleteButton = await this.getTodoByText(todo);
-        const todoToDelete = todoToDelete.locator('.destroy');
+        const todoToDelete = await this.getTodoByText(todo);
+        const deleteButton = todoToDelete.locator('.destroy');
         await todoToDelete.hover();
         await deleteButton.click();
     }
@@ -60,7 +60,7 @@ export class TodoPage {
 
     async edit(oldText, newText) {
         const editInput = await this.startEditing(oldText, newText);
-        await editInput.pressEnter();
+        await editInput.press('Enter');
     }
 
     async editByTab(oldText, newText) {
@@ -76,7 +76,7 @@ export class TodoPage {
     async startEditing(oldText, newText) {
         const todoToEdit = await this.getTodoByText(oldText);
         const editInput = todoToEdit.locator('.edit');
-        await todoToEdit.dblclick();
+        await todoToEdit.dblclick(); //f
         await editInput.fill(newText);
         return editInput;
     }
