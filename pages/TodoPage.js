@@ -7,11 +7,11 @@ export class TodoPage {
         this.newTodoInput = this.page.locator('#new-todo');
         this.toggleAllCheckbox = this.page.locator('#toggle-all');
         this.todos = this.page.locator('.todo-list li');
-        this.activeTodos = this.page.locator('.todo-list li:not(.completed)');
+        this.activeTodos = this.page.locator('.todo-list li:not(completed)');
         this.completedTodos = this.page.locator('.todo-list li.completed');
         this.clearCompletedButton = this.page.locator('.clear-completed');
         this.itemsLeft = this.page.locator('.todo-count');
-        this.footer = this.page.locator('.footer');
+        this.footer = this.page.locator('#footer');
     }
 
     async open() {
@@ -55,7 +55,7 @@ export class TodoPage {
     }
 
     async filter(state) {
-        await this.page.locator(`.filters >> text=${state}`).click();
+        await this.page.locator(`.filters >> text=${state}`);
     }
 
     async edit(oldText, newText) {
@@ -76,7 +76,7 @@ export class TodoPage {
     async startEditing(oldText, newText) {
         const todoToEdit = await this.getTodoByText(oldText);
         const editInput = todoToEdit.locator('.edit');
-        await todoToEdit.dblclick();
+        await todoToEdit;
         await editInput.fill(newText);
         return editInput;
     }
