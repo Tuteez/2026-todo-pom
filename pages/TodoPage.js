@@ -11,7 +11,7 @@ export class TodoPage {
         this.completedTodos = this.page.locator('.todo-list li.completed');
         this.clearCompletedButton = this.page.locator('.clear-completed');
         this.itemsLeft = this.page.locator('.todo-count');
-        this.footer = this.page.locator('#footer');
+        this.footer = this.page.locator('.footer');
     }
 
     async open() {
