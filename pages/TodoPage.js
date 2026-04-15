@@ -4,7 +4,7 @@ import { openPage } from '../helpers/navigation';
 export class TodoPage {
     constructor(page) {
         this.page = page;
-        this.newTodoInput = this.page.locator('.new-todo');
+        this.newTodoInput = this.page.locator('#new-todo');
         this.toggleAllCheckbox = this.page.locator('#toggle-all');
         this.todos = this.page.locator('.todo-list li');
         this.activeTodos = this.page.locator('.todo-list li:not(.completed)');
