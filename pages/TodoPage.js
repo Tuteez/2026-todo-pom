@@ -4,10 +4,10 @@ import { openPage } from '../helpers/navigation';
 export class TodoPage {
     constructor(page) {
         this.page = page;
-        this.newTodoInput = this.page.locator('#new-todo');
+        this.newTodoInput = this.page.locator('.new-todo');
         this.toggleAllCheckbox = this.page.locator('#toggle-all');
         this.todos = this.page.locator('.todo-list li');
-        this.activeTodos = this.page.locator('.todo-list li:not(completed)');
+        this.activeTodos = this.page.locator('.todo-list li:not(.completed)');
         this.completedTodos = this.page.locator('.todo-list li.completed');
         this.clearCompletedButton = this.page.locator('.clear-completed');
         this.itemsLeft = this.page.locator('.todo-count');
@@ -76,7 +76,7 @@ export class TodoPage {
     async startEditing(oldText, newText) {
         const todoToEdit = await this.getTodoByText(oldText);
         const editInput = todoToEdit.locator('.edit');
-        await todoToEdit;
+        await todoToEdit.dblclick();
         await editInput.fill(newText);
         return editInput;
     }
